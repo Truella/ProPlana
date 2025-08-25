@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+db.sqlite3
+*.log
+.env
+
+# Django
+/staticfiles
+/media
+
+# VS Code
+.vscode/
+
+# Tailwind / Node
+node_modules/
+theme/static_src/
+theme/node_modules/
+theme/package-lock.json
+
+# OS
+.DS_Store
+Thumbs.db
