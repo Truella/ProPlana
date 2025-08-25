@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static tailwind_tags %}
+{% block content %}{% if form.errors %}
+<p>You have entered a wrong email or password</p>
+{% endif %}
+{% if next %}
+{% if not user.is_authenticated %}
+<p>Please login to view that page:</p>
+{% else %}
+<p>Please Login</p>
+{% endif %}
+{% endif %}
+<form action="{% url 'login' %}" method="POST" class="border border-black bg-gray-50">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="Submit">
+    <input type="hidden" name="next" value={{next}}>
+</form>{% endblock content %}

@@ -1,26 +1,44 @@
 {% load static tailwind_tags %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <title>Django Tailwind</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     {% tailwind_css %}
-</head>
+  </head>
 
-<body class="bg-gray-50 text-black font-serif leading-normal tracking-normal">
+  <body class="bg-gray-50 text-black font-serif leading-normal tracking-normal">
+    <header class="flex border border-red-500 justify-between h-[10vh] items-center px-8">
+      <h1>Pro<span>Planner</span></h1><nav>
+        <ul class="flex w-[30vw] justify-between">
+          {% if not user.is_authenticated %}
+            <li>
+              <a href="{% url 'signup' %}">Sign Up</a>
+            </li>
+            <li>
+              <a href="{% url 'login' %}">Log In</a>
+            </li>
+          {% endif %}
 
-    <div class="toast toast-top toast-end">
-        <div class="alert alert-info">
-            <span>Hello from daisyUi 👋</span>
-        </div>
-    </div>
+          {% if user.is_authenticated %}
+            <li>
+              <a href="{% url 'home' %}">Home</a>
+            </li>
+            <li>
+              <a href="#">Projects</a>
+            </li>
+            <form action="{% url 'logout' %}" method="POST">
+              {% csrf_token %}
+              <input type="submit" value="Logout" />
+            </form>
+          {% endif %}
+        </ul>
+      </nav>
+    </header>
+    {% block content %}
 
-<div class="container mx-auto">
-    <section class="flex items-center justify-center h-screen">
-        <h1 class="text-5xl">Django + Tailwind = ❤️</h1>
-    </section>
-</div>
-</body>
+    {% endblock %}
+  </body>
 </html>
