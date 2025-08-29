@@ -1,9 +1,0 @@
-{% extends 'base.html' %}
-{% load static tailwind_tags %}
-{% block content %}
-  <form action="{% url 'signup' %}" method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Submit" class="bg-amber-400"/>
-  </form>
-{% endblock %}

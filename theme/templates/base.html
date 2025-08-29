@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Django Tailwind</title>
+    <title>ProPlanner</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
@@ -10,35 +10,37 @@
   </head>
 
   <body class="bg-gray-50 text-black font-serif leading-normal tracking-normal">
-    <header class="flex border border-red-500 justify-between h-[10vh] items-center px-8">
-      <h1>Pro<span>Planner</span></h1><nav>
-        <ul class="flex w-[30vw] justify-between">
+    <!-- Navbar -->
+    <header class="bg-white shadow-md w-full z-10">
+      <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+        <h1 class="text-2xl font-bold text-blue-600">ProPlana</h1>
+        <nav class="space-x-6 hidden md:flex items-center list-none">
           {% if not user.is_authenticated %}
-            <li>
-              <a href="{% url 'signup' %}">Sign Up</a>
-            </li>
-            <li>
-              <a href="{% url 'login' %}">Log In</a>
-            </li>
+            <div class="space-x-4">
+              <a href="{% url 'login' %}" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Login</a>
+              <a href="{% url 'signup' %}" class="px-4 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-600 hover:text-white">Sign Up</a>
+            </div>
           {% endif %}
-
           {% if user.is_authenticated %}
             <li>
               <a href="{% url 'home' %}">Home</a>
             </li>
             <li>
-              <a href="#">Projects</a>
+              <a href="{% url 'projects' %}">Projects</a>
             </li>
             <form action="{% url 'logout' %}" method="POST">
               {% csrf_token %}
-              <input type="submit" value="Logout" />
+              <input type="submit" value="Logout" class="px-4 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-600 hover:text-white"/>
             </form>
           {% endif %}
-        </ul>
-      </nav>
+        </nav>
+      </div>
     </header>
-    {% block content %}
 
-    {% endblock %}
+    <div>
+      {% block content %}
+
+      {% endblock %}
+    </div>
   </body>
 </html>

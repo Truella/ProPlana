@@ -41,6 +41,8 @@ INSTALLED_APPS = [
 
     #Local Apps
     'tasks',
+    'accounts',
+    'profiles',
 
     #Third party apps
     'tailwind',
@@ -137,4 +139,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 TAILWIND_APP_NAME = 'theme'
 NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
 
+LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'landing-page'
+AUTHENTICATION_FORM = "accounts.forms.LoginForm"

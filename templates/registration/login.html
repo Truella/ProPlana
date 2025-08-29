@@ -1,18 +1,59 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static tailwind_tags %}
-{% block content %}{% if form.errors %}
-<p>You have entered a wrong email or password</p>
-{% endif %}
-{% if next %}
-{% if not user.is_authenticated %}
-<p>Please login to view that page:</p>
-{% else %}
-<p>Please Login</p>
-{% endif %}
-{% endif %}
-<form action="{% url 'login' %}" method="POST" class="border border-black bg-gray-50">
-    {% csrf_token %}
-    {{form.as_p}}
-    <input type="submit" value="Submit">
-    <input type="hidden" name="next" value={{next}}>
-</form>{% endblock content %}
+
+{% block content %}
+<!-- 
+  ===========================
+  LOGIN PAGE
+  ===========================
+  - Tailwind styled login form
+  - Error messages displayed at the top
+  - Redirects user based on "next"
+-->
+
+<div class="min-h-screen flex items-center justify-center bg-gray-50">
+  <div class="w-full max-w-md bg-white p-8 rounded-2xl shadow-md">
+    <h2 class="text-2xl font-bold text-center text-blue-600 mb-6">Login to ProPlana</h2>
+
+    <!-- Show error messages -->
+    {% if form.errors %}
+      <div class="mb-4 p-3 rounded-lg bg-red-100 text-red-600 text-sm">
+        Please enter a correct username and password. Try again.
+      </div>
+    {% endif %}
+
+    <!-- Login form -->
+    <form method="POST" action="{% url 'login' %}" class="space-y-4">
+      {% csrf_token %}
+      
+      <!-- Username -->
+      <div>
+        {{ form.username }}
+      </div>
+
+      <!-- Password -->
+      <div>
+        {{ form.password }}
+      </div>
+
+      <!-- Hidden next field -->
+      <input type="hidden" name="next" value="{{ next }}">
+
+      <!-- Submit -->
+      <button type="submit"
+        class="w-full py-2 px-4 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        Login
+      </button>
+    </form>
+
+    <!-- Extra links -->
+    <p class="text-center text-sm text-gray-600 mt-4">
+      Don’t have an account?
+      <a href="{% url 'signup' %}" class="text-blue-600 hover:underline">Sign up</a>
+    </p>
+    <p class="text-center text-sm text-gray-600 mt-2">
+      <a href="{% url 'password_reset' %}" class="text-blue-600 hover:underline">Forgot password?</a>
+    </p>
+  </div>
+</div>
+{% endblock %}
