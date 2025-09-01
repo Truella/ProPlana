@@ -1,6 +1,7 @@
 # tasks/forms.py
 from django import forms
 from .models import Project, Task
+from common.form_helpers import INPUT_STYLE_ATTR
 
 
 class ProjectForm(forms.ModelForm):
@@ -14,21 +15,22 @@ class ProjectForm(forms.ModelForm):
         widgets = {
             "name": forms.TextInput(
                 attrs={
-                    "class": "w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
+                    **INPUT_STYLE_ATTR,
                     "placeholder": "Enter project name",
                 }
             ),
             "description": forms.Textarea(
                 attrs={
-                    "class": "w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
+                    **INPUT_STYLE_ATTR,
                     "rows": 4,
+                    "style":"resize:none",
                     "placeholder": "Enter description",
                 }
             ),
             "due_date": forms.DateInput(
                 attrs={
                     "type": "date",
-                    "class": "w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
+                    **INPUT_STYLE_ATTR,
                 }
             ),
         }
@@ -45,13 +47,13 @@ class TaskForm(forms.ModelForm):
         widgets = {
             "title": forms.TextInput(
                 attrs={
-                    "class": "w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
+                    **INPUT_STYLE_ATTR,
                     "placeholder": "Enter task name",
                 }
             ),
             "description": forms.Textarea(
                 attrs={
-                    "class": "w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
+                    **INPUT_STYLE_ATTR,
                     "rows": 4,
                     "placeholder": "Enter description",
                 }
@@ -59,7 +61,7 @@ class TaskForm(forms.ModelForm):
             "due_date": forms.DateInput(
                 attrs={
                     "type": "date",
-                    "class": "w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
+                    **INPUT_STYLE_ATTR,
                 }
             ),
         }

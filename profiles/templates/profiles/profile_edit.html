@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-gray-50 p-6">
+  <div class="w-full max-w-2xl bg-white shadow-md rounded-2xl p-8">
+    <h2 class="text-2xl font-bold text-center text-blue-600 mb-6">Edit Profile</h2>
+
+    <!-- Form -->
+    <form method="POST" enctype="multipart/form-data" class="space-y-6">
+      {% csrf_token %}
+      
+      <!-- Show errors -->
+      {% if user_form.errors or profile_form.errors %}
+        <div class="p-4 bg-red-100 text-red-600 rounded-lg text-sm mb-4">
+          Please correct the errors below and try again.
+        </div>
+      {% endif %}
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- User fields -->
+        <div>
+          <label for="id_username" class="block text-sm font-medium text-gray-700">Username</label>
+          {{ user_form.username }}
+        </div>
+
+        <div>
+          <label for="id_email" class="block text-sm font-medium text-gray-700">Email</label>
+          {{ user_form.email }}
+        </div>
+
+        <div>
+          <label for="id_first_name" class="block text-sm font-medium text-gray-700">First Name</label>
+          {{ user_form.first_name }}
+        </div>
+
+        <div>
+          <label for="id_last_name" class="block text-sm font-medium text-gray-700">Last Name</label>
+          {{ user_form.last_name }}
+        </div>
+
+        <!-- Profile fields -->
+        <div class="md:col-span-2">
+          <label for="id_bio" class="block text-sm font-medium text-gray-700">Bio</label>
+          {{ profile_form.bio }}
+        </div>
+
+        <div class="md:col-span-2">
+          <label for="id_avatar" class="block text-sm font-medium text-gray-700">Avatar</label>
+          {{ profile_form.avatar }}
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <div class="flex justify-center">
+        <button type="submit"
+          class="px-6 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 shadow-md">
+          Save Changes
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

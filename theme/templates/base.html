@@ -12,26 +12,47 @@
   <body class="bg-gray-50 text-black font-serif leading-normal tracking-normal">
     <!-- Navbar -->
     <header class="bg-white shadow-md w-full z-10">
-      <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-        <h1 class="text-2xl font-bold text-blue-600">ProPlana</h1>
-        <nav class="space-x-6 hidden md:flex items-center list-none">
+      <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
+        <!-- Logo + Mobile Toggler -->
+        <div class="flex justify-between items-center w-full h-[10vh]">
+          <h1 class="text-2xl font-bold text-blue-600">ProPlana</h1>
+
+          <!-- Mobile Toggler -->
+          <button id="menu-btn" class="md:hidden text-blue-600 focus:outline-none flex items-center justify-center">
+            <!-- Hamburger Icon -->
+            <svg class="w-8 h-8" id="open-menu" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <!-- Close Icon -->
+            <svg class="w-8 h-8 opacity-0 absolute" id="close-menu" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Navigation -->
+        <nav id="menu" class="opacity-0 h-0 transition-all duration-300 ease-in-out md:opacity-100 md:h-[10vh] md:flex flex-col md:flex-row w-[100vw] md:w-[20vw] justify-between items-center bg-white md:bg-transparent shadow-md md:shadow-none">
           {% if not user.is_authenticated %}
-            <div class="space-x-4">
+            <div class="flex flex-col md:flex-row md:space-x-4 p-4 md:p-0">
               <a href="{% url 'login' %}" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Login</a>
               <a href="{% url 'signup' %}" class="px-4 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-600 hover:text-white">Sign Up</a>
             </div>
           {% endif %}
           {% if user.is_authenticated %}
-            <li>
-              <a href="{% url 'home' %}">Home</a>
-            </li>
-            <li>
-              <a href="{% url 'projects' %}">Projects</a>
-            </li>
-            <form action="{% url 'logout' %}" method="POST">
-              {% csrf_token %}
-              <input type="submit" value="Logout" class="px-4 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-600 hover:text-white"/>
-            </form>
+            <ul class="md:flex md:justify-between w-full">
+              <li class="justify-center flex items-center">
+                <a href="{% url 'home' %}">Home</a>
+              </li>
+              <li class="justify-center flex items-center">
+                <a href="{% url 'projects' %}">Projects</a>
+              </li>
+              <li>
+                <form action="{% url 'logout' %}" method="POST" class="mt-2 md:mt-0 text-center">
+                  {% csrf_token %}
+                  <input type="submit" value="Logout" class="w-[60%] md:w-auto px-4 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-600 hover:text-white" />
+                </form>
+              </li>
+            </ul>
           {% endif %}
         </nav>
       </div>
@@ -39,8 +60,23 @@
 
     <div>
       {% block content %}
-
       {% endblock %}
     </div>
+
+    <script>
+      const btn = document.getElementById('menu-btn')
+      const menu = document.getElementById('menu')
+      const X = document.getElementById('close-menu')
+      const Y = document.getElementById('open-menu')
+      
+      btn.addEventListener('click', () => {
+        menu.classList.toggle('opacity-0')
+        menu.classList.toggle('h-0')
+        menu.classList.toggle('h-[30vh]')
+        
+        X.classList.toggle('opacity-0')
+        Y.classList.toggle('opacity-0')
+      })
+    </script>
   </body>
 </html>
