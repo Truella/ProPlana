@@ -1,28 +1,32 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="max-w-md mx-auto mt-20 p-6 bg-white rounded-lg shadow-md text-center">
-  
-  <!-- Confirmation message -->
-  <div class="text-gray-800 font-heading text-xl mb-6">
-    Are you sure you want to delete 
-    <span class="font-body text-gray-600">"{{ object.name }}"</span>?
+  <div class="max-w-md mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-lg p-8 text-center">
+      <!-- Warning Icon -->
+      <div class="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+        <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+        </svg>
+      </div>
+      
+      <!-- Confirmation Message -->
+      <h2 class="text-xl font-semibold text-slate-900 mb-2">Delete Project</h2>
+      <p class="text-slate-600 mb-8">
+        Are you sure you want to delete 
+        <span class="font-semibold text-slate-900">"{{ object.name }}"</span>?
+        <br><span class="text-sm text-red-600 mt-2 block">This action cannot be undone.</span>
+      </p>
+      
+      <!-- Action Buttons -->
+      <form method="post" class="space-y-4">
+        {% csrf_token %}
+        <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-xl transition-colors">
+          Yes, Delete Project
+        </button>
+        <a href="{% url 'project-detail' object.pk %}" class="block w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium py-3 px-6 rounded-xl transition-colors">
+          Cancel
+        </a>
+      </form>
+    </div>
   </div>
-  
-  <!-- Form -->
-  <form method="post" class="flex justify-center gap-4">
-    {% csrf_token %}
-    
-    <!-- Delete button -->
-    <button type="submit" 
-      class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded transition-colors duration-200">
-      Yes, delete
-    </button>
-    
-    <!-- Cancel link -->
-    <a href="{% url 'project-detail' object.pk %}" 
-      class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded transition-colors duration-200">
-      Cancel
-    </a>
-  </form>
-</div>
 {% endblock %}

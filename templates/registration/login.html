@@ -2,58 +2,63 @@
 {% load static tailwind_tags %}
 
 {% block content %}
-<!-- 
-  ===========================
-  LOGIN PAGE
-  ===========================
-  - Tailwind styled login form
-  - Error messages displayed at the top
-  - Redirects user based on "next"
--->
+  <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full">
+      <!-- Login Card -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-lg p-8">
+        <!-- Header -->
+        <div class="text-center mb-8">
+          <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-teal-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <span class="text-white font-bold text-xl">P</span>
+          </div>
+          <h2 class="text-2xl font-semibold text-slate-900 mb-2">Welcome back</h2>
+          <p class="text-slate-600">Sign in to your ProPlana account</p>
+        </div>
 
-<div class="h-[80vh] flex items-center justify-center bg-gray-50">
-  <div class="w-[80vw] md:w-[30vw] bg-white p-8 rounded-2xl shadow-md">
-    <h2 class="text-2xl font-[500] text-center text-blue-600 mb-6">Login to Pro<span class="border-b-2 border-b-blue-600">Plana</span> </h2>
+        <!-- Error Messages -->
+        {% if form.errors %}
+          <div class="mb-6 p-4 rounded-xl bg-red-50 border border-red-200">
+            <div class="flex items-center space-x-2">
+              <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <p class="text-sm text-red-700 font-medium">Please enter a correct username and password</p>
+            </div>
+          </div>
+        {% endif %}
 
-    <!-- Show error messages -->
-    {% if form.errors %}
-      <div class="mb-4 p-3 rounded-lg bg-red-100 text-red-600 text-sm">
-        Please enter a correct username and password. Try again.
+        <!-- Login Form -->
+        <form method="POST" action="{% url 'login' %}" class="space-y-6">
+          {% csrf_token %}
+          
+          <div>
+            <label for="{{ form.username.id_for_label }}" class="block text-sm font-medium text-slate-700 mb-2">Username</label>
+            {{ form.username }}
+          </div>
+
+          <div>
+            <label for="{{ form.password.id_for_label }}" class="block text-sm font-medium text-slate-700 mb-2">Password</label>
+            {{ form.password }}
+          </div>
+
+          <input type="hidden" name="next" value="{{ next }}">
+
+          <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-xl transition-colors shadow-sm hover:shadow-md">
+            Sign In
+          </button>
+        </form>
+
+        <!-- Footer Links -->
+        <div class="mt-8 space-y-4 text-center">
+          <p class="text-sm text-slate-600">
+            Don't have an account?
+            <a href="{% url 'signup' %}" class="text-blue-600 hover:text-blue-700 font-medium transition-colors">Sign up</a>
+          </p>
+          <p class="text-sm">
+            <a href="{% url 'password_reset' %}" class="text-slate-500 hover:text-slate-700 transition-colors">Forgot your password?</a>
+          </p>
+        </div>
       </div>
-    {% endif %}
-
-    <!-- Login form -->
-    <form method="POST" action="{% url 'login' %}" class="space-y-4">
-      {% csrf_token %}
-      
-      <!-- Username -->
-      <div>
-        {{ form.username }}
-      </div>
-
-      <!-- Password -->
-      <div>
-        {{ form.password }}
-      </div>
-
-      <!-- Hidden next field -->
-      <input type="hidden" name="next" value="{{ next }}">
-
-      <!-- Submit -->
-      <button type="submit"
-        class="w-full py-2 px-4 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-        Login
-      </button>
-    </form>
-
-    <!-- Extra links -->
-    <p class="text-center text-sm text-gray-600 mt-4">
-      Don’t have an account?
-      <a href="{% url 'signup' %}" class="text-blue-600 hover:underline">Sign up</a>
-    </p>
-    <p class="text-center text-sm text-gray-600 mt-2">
-      <a href="{% url 'password_reset' %}" class="text-blue-600 hover:underline">Forgot password?</a>
-    </p>
+    </div>
   </div>
-</div>
 {% endblock %}
