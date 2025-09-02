@@ -3,7 +3,7 @@
   <div class="min-h-screen bg-gray-50 p-6">
     <!-- Header / Add Project Button -->
     <div class="flex justify-between items-center max-w-6xl mx-auto mb-6">
-      <h1 class="text-2xl font-bold text-gray-800">Your Projects</h1>
+      <p class="sm:text-xl text-2xl text-gray-800 md:text-blue-600 md:font-bold">Your Projects</p>
       <a href="{% url 'create-project' %}" class="px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 shadow-md">+ Add New Project</a>
     </div>
 
@@ -15,11 +15,7 @@
             
             
             
-            
-            
       bg-red-100 border border-red-400
-
-
 
 
 
@@ -28,14 +24,14 @@
           {% endif %}">
           <!-- Project Title -->
           <div>
-            <h2 class="text-xl font-semibold text-gray-800 mb-2">
+            <p class="text-xl font-semibold text-gray-800 mb-2">
               {{ project.name }}
               {% if project.is_active %}
                 <span class="ml-2 text-sm text-green-500 italic">(Active)</span>
               {% else %}
                 <span class="ml-2 text-sm text-gray-500 italic">(Completed)</span>
               {% endif %}
-            </h2>
+            </p>
 
             <!-- Description -->
             {% if project.description %}
@@ -52,7 +48,15 @@
                   
                   
                   
+                  
+                  
+                  
+                  
                   text-red-600 font-[500]
+
+
+
+
 
 
 
@@ -62,12 +66,24 @@
                   
                   
                   
+                  
+                  
+                  
+                  
                   text-gray-600
 
 
 
 
-                {% endif %}">Due: {{ project.due_date }} {% if project.is_overdue %}<span class="">(Past due date)</span>{% endif %}</p>
+
+
+
+
+                {% endif %}">
+                Due: {{ project.due_date }} {% if project.is_overdue %}
+                  <span class="">(Past due date)</span>
+                {% endif %}
+              </p>
             {% else %}
               <p class="text-sm text-gray-400 italic">No due date set</p>
             {% endif %}

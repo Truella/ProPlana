@@ -1,90 +1,104 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="min-h-screen bg-gray-50 flex">
-  
-  <!-- Sidebar -->
-  <aside class="w-64 bg-white shadow-lg border-r">
-    <div class="p-6 border-b">
-      <h2 class="text-xl font-bold text-gray-800">Profile</h2>
-      <p class="text-sm text-gray-500">Manage your account</p>
-    </div>
-    <nav class="p-4 space-y-2">
-      <a href="#overview" class="block px-3 py-2 rounded-lg text-gray-700 hover:bg-indigo-50 hover:text-indigo-600">Overview</a>
-      <a href="#account" class="block px-3 py-2 rounded-lg text-gray-700 hover:bg-indigo-50 hover:text-indigo-600">Account</a>
-      <a href="#projects" class="block px-3 py-2 rounded-lg text-gray-700 hover:bg-indigo-50 hover:text-indigo-600">My Projects</a>
-      <a href="#preferences" class="block px-3 py-2 rounded-lg text-gray-700 hover:bg-indigo-50 hover:text-indigo-600">Preferences</a>
-    </nav>
-  </aside>
-
-  <!-- Main Content -->
-  <main class="flex-1 p-6 space-y-12">
-
-    <!-- Overview -->
-    <section id="overview" class="bg-white shadow rounded-2xl p-6">
-      <h3 class="text-lg font-semibold text-gray-800 mb-4">Overview</h3>
-      <p class="text-gray-600">Welcome back, <span class="font-medium">{{ user.get_full_name|default:user.username }}</span>!</p>
-      <p class="text-gray-500 text-sm mt-1">Last login: {{ user.last_login }}</p>
-      <p class="text-gray-500 text-sm">Member since: {{ user.date_joined }}</p>
-    </section>
-
-    <!-- Account Settings -->
-    <section id="account" class="bg-white shadow rounded-2xl p-6">
-      <h3 class="text-lg font-semibold text-gray-800 mb-4">Account</h3>
-      <ul class="space-y-3">
-        <li><span class="font-medium">Full Name:</span> {{ user.get_full_name }}</li>
-        <li><span class="font-medium">Username:</span> @{{ user.username }}</li>
-        <li><span class="font-medium">Email:</span> {{ user.email }}</li>
-        {% if profile.role %}
-          <li><span class="font-medium">Role:</span> {{ profile.role }}</li>
-        {% endif %}
-        {% if profile.bio %}
-          <li><span class="font-medium">Bio:</span> {{ profile.bio }}</li>
-        {% endif %}
-        {% if profile.contact %}
-          <li><span class="font-medium">Contact:</span> {{ profile.contact }}</li>
-        {% endif %}
-      </ul>
-
-      <div class="mt-6 flex flex-wrap gap-3">
-        <a href="{% url 'profile-edit' %}" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">Edit Profile</a>
-        <a href="{% url 'password-change' %}" class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200">Change Password</a>
-        <a href="#" class="bg-red-100 text-red-600 px-4 py-2 rounded-lg hover:bg-red-200">Logout</a>
+  <div class="min-h-screen bg-gray-50 flex flex-col md:flex-row">
+    <!-- Sidebar -->
+    <aside class="md:w-64 bg-gradient-to-r from-blue-50 to-blue-100 shadow-lg">
+      <div class="p-6 border-b">
+        <h2 class="text-xl italic text-gray-800">@{{ user.username }}</h2>
+        <p class="text-sm text-gray-800">Manage your account</p>
       </div>
-    </section>
+      <nav class="hidden md:block p-4 space-y-2">
+        <a href="#overview" class="block px-3 py-2 rounded-lg text-gray-700 hover:bg-indigo-50 hover:text-indigo-600">Overview</a>
+        <a href="#account" class="block px-3 py-2 rounded-lg text-gray-700 hover:bg-indigo-50 hover:text-indigo-600">Account</a>
+        <a href="#preferences" class="block px-3 py-2 rounded-lg text-gray-700 hover:bg-indigo-50 hover:text-indigo-600">Preferences</a>
+      </nav>
+    </aside>
 
-    <!-- Projects -->
-    <section id="projects" class="bg-white shadow rounded-2xl p-6">
-      <h3 class="text-lg font-semibold text-gray-800 mb-4">My Projects</h3>
-      {% if user.project_set.all %}
-        <ul class="divide-y">
-          {% for project in user.project_set.all %}
-            <li class="py-3">
-              <a href="#" class="text-indigo-600 hover:underline">{{ project.name }}</a>
-              <p class="text-sm text-gray-500">{{ project.description|truncatechars:100 }}</p>
+    <!-- Main Content -->
+    <main class="flex-1 p-6 space-y-12">
+      <!-- Overview -->
+
+      <!-- Account Settings -->
+      <section class="md:flex gap-8">
+        <div id="account" class="bg-white shadow rounded-2xl p-6 md:w-[45%]">
+          <h3 class="text-lg md:text-center font-semibold text-gray-800 mb-4">User Data</h3>
+          <ul class="space-y-3 max-w-[400px] mx-auto">
+            <li>
+              <span class="text-sm text-gray-500">Full Name:</span> <span class="w-full max-w-[400px] border border-gray-200 rounded-lg px-3 py-2 block text-gray-700">{{ user.get_full_name }}</span>
             </li>
-          {% endfor %}
-        </ul>
-      {% else %}
-        <p class="text-gray-500">You don’t have any projects yet.</p>
-      {% endif %}
-    </section>
+            <li>
+              <span class="text-sm text-gray-500">Username:</span><span class="w-full max-w-[400px] border border-gray-200 rounded-lg px-3 py-2 block text-gray-700">@{{ user.username }}</span>
+            </li>
+            <li>
+              <span class="text-sm text-gray-500">Email:</span> <span class="block w-full max-w-[400px] border border-gray-200 rounded-lg px-3 py-2 text-gray-700">{{ user.email }}</span>
+            </li>
+            {% if user.profile.role %}
+              <li>
+                <span class="text-sm text-gray-500">Role:</span><span class="w-full max-w-[400px] border border-gray-200 rounded-lg px-3 py-2 block text-gray-700">{{ user.profile.role }}</span>
+              </li>
+            {% endif %}
+            {% if user.profile.contact %}
+              <li>
+                <span class="text-sm text-gray-500">Contact:</span><span class="w-full max-w-[400px] border border-gray-200 rounded-lg px-3 py-2 block text-gray-700">{{ user.profile.contact }}</span>
+              </li>
+            {% endif %}
+          </ul>
 
-    <!-- Preferences -->
-    <section id="preferences" class="bg-white shadow rounded-2xl p-6">
-      <h3 class="text-lg font-semibold text-gray-800 mb-4">Preferences</h3>
-      <div class="space-y-4">
-        <div class="flex items-center justify-between">
-          <span class="text-gray-700">Dark Mode</span>
-          <button class="px-3 py-1 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200">Toggle</button>
+          <div class="mt-6 flex justify-center flex-wrap gap-3">
+            <a href="{% url 'profile-edit' %}" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">Edit Profile</a>
+            <a href="{% url 'password-change' %}" class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200">Change Password</a>
+            <a href="{% url 'logout' %}" class="bg-red-100 text-red-600 px-4 py-2 rounded-lg hover:bg-red-200">Logout</a>
+          </div>
         </div>
-        <div class="flex items-center justify-between">
-          <span class="text-gray-700">Email Notifications</span>
-          <button class="px-3 py-1 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200">Manage</button>
+        <div class="bg-white shadow rounded-2xl p-6 md:w-[45%]">
+          <h3 class="text-lg md:text-center font-semibold text-gray-800 mb-4">Recent Projects</h3>
+          <div>
+            {% if projects %}
+              {% for project in projects %}
+                <div class="border border-gray-200 rounded-lg px-3 py-2 mb-2">
+                  <div class="flex justify-between">
+                    <span>{{ project.name }}</span> <span class="text-sm">{{ project.progress_percentage|floatformat:2 }}%</span>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <div class="">
+                      <span class="text-sm">Created: </span><span class="text-sm">{{ project.created_at|date:"M d, Y" }}</span>
+                    </div>
+                    <div class="">
+                      <span class="text-sm">Due:</span><span class="text-sm">{{ project.due_date }}</span>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            {% else %}
+              <p>
+                You do not have any projects yet. Create one <a href="{% url 'create-project' %}" class="text-blue-600">here.</a>
+              </p>
+            {% endif %}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-  </main>
-</div>
+      <section id="overview" class="bg-white shadow rounded-2xl p-6">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">User activity</h3>
+        <p class="text-gray-500 text-sm mt-1">Last login: {{ user.last_login }}</p>
+        <p class="text-gray-500 text-sm">Member since: {{ user.date_joined }}</p>
+      </section>
+
+      <!-- Preferences -->
+      <section id="preferences" class="bg-white shadow rounded-2xl p-6">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">Preferences</h3>
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="text-gray-700">Dark Mode</span>
+            <button class="px-3 py-1 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200">Toggle</button>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-gray-700">Email Notifications</span>
+            <button class="px-3 py-1 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200">Manage</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
 {% endblock %}

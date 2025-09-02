@@ -20,7 +20,7 @@ class HomeView(LoginRequiredMixin, TemplateView):
     redirect_field_name = "next"
 
 
-class ProjectView(ListView):
+class ProjectView(LoginRequiredMixin, ListView):
     model = Project
     template_name = "tasks/projects.html"
 
@@ -37,12 +37,12 @@ class ProjectView(ListView):
         projects = Project.objects.filter(owner=self.request.user)
         for i, project in enumerate(projects):
             bg_card, btn_color = self.COLORS[i % len(self.COLORS)]
-            project.bg_color = bg_card      # pastel card color
-            project.btn_color = btn_color   # solid button color
+            project.bg_color = bg_card  # pastel card color
+            project.btn_color = btn_color  # solid button color
         return projects
 
 
-class CreateProjectView(CreateView):
+class CreateProjectView(LoginRequiredMixin, CreateView):
     model = Project
     form_class = ProjectForm
     template_name = "tasks/project_form.html"
@@ -53,18 +53,28 @@ class CreateProjectView(CreateView):
         return super().form_valid(form)
 
 
-class ProjectDetailView(DetailView):
+class ProjectDetailView(LoginRequiredMixin, DetailView):
     model = Project
     template_name = "tasks/project_detail.html"
+    context_object_name = "project"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        project = self.get_object()
+        completed = project.tasks.filter(is_completed=True).count()
+        pending = project.tasks.filter(is_completed=False).count()
+        context["completed_count"] = completed
+        context["pending_count"] = pending
+        return context
 
 
-class UpdateProjectView(UpdateView):
+class UpdateProjectView(LoginRequiredMixin, UpdateView):
     model = Project
     form_class = ProjectForm
     success_url = reverse_lazy("projects")
 
 
-class DeleteProjectView(DeleteView):
+class DeleteProjectView(LoginRequiredMixin, DeleteView):
     model = Project
     success_url = reverse_lazy("projects")
 
@@ -77,7 +87,7 @@ class DeleteProjectView(DeleteView):
         return Project.objects.filter(owner = self.request.user)"""
 
 
-class TaskCreateView(CreateView):
+class TaskCreateView(LoginRequiredMixin, CreateView):
     model = Task
     form_class = TaskForm
     template_name = "tasks/task_form.html"
@@ -91,13 +101,17 @@ class TaskCreateView(CreateView):
     def get_success_url(self):
         return reverse("project-detail", kwargs={"pk": self.kwargs["pk"]})
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["project"] = get_object_or_404(Project, pk=self.kwargs["pk"])
+        return context
 
-class TaskUpdateView(UpdateView):
+
+class TaskUpdateView(LoginRequiredMixin, UpdateView):
     model = Task
-    fields = ["title", "description", "due_date"]
+    form_class = TaskForm
     template_name = "tasks/task_form.html"
-    
-    
+
     def get_object(self, queryset=None):
         """
         Override default behavior:
@@ -106,6 +120,11 @@ class TaskUpdateView(UpdateView):
         project_id = self.kwargs.get("project_pk")
         task_id = self.kwargs.get("task_pk")
         return get_object_or_404(Task, pk=task_id, project__pk=project_id)
+
     def get_success_url(self):
         return reverse("project-detail", kwargs={"pk": self.kwargs["project_pk"]})
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["project"] = get_object_or_404(Project, pk=self.kwargs["project_pk"])
+        return context

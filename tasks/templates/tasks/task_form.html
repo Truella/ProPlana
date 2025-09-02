@@ -1,27 +1,25 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="flex items-center justify-center min-h-screen bg-gray-50">
-  <div class="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg">
-    <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Fill the Form</h2>
-    <form method="POST" class="space-y-5">
-      {% csrf_token %}
-      {% for field in form %}
-        <div>
-          <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
-            {{ field.label }}
-          </label>
-          {{ field }}
-          {% if field.errors %}
-            <p class="text-red-500 text-xs mt-1">{{ field.errors }}</p>
-          {% endif %}
-        </div>
-      {% endfor %}
-      <button type="submit" 
-        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow transition duration-200">
-        Submit
-      </button>
-    </form>
+  <div class="flex justify-between items-center max-w-6xl mx-4 md:mx-auto mt-8 mb-4">
+    <a class="border rounded-md py-2 px-4 text-blue-600 border-blue-600" href="{% url 'project-detail' project.pk %}">Go back to tasks</a>
   </div>
-</div>
+  <div class="flex items-center justify-center bg-gray-50 w-[90vw] mx-auto">
+    <div class="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg">
+      <h2 class="text-2xl font-[500] text-blue-600 mb-6 text-center">Add a new task</h2>
+      <form method="POST" class="space-y-5">
+        {% csrf_token %}
+        {% for field in form %}
+          <div>
+            <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+              <p class="text-red-500 text-xs mt-1">{{ field.errors }}</p>
+            {% endif %}
+          </div>
+        {% endfor %}
+        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow transition duration-200">Save</button>
+      </form>
+    </div>
+  </div>
 {% endblock %}

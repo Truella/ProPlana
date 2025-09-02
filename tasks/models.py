@@ -56,6 +56,11 @@ class Project(models.Model):
             self.is_active = True
         self.save()
 
+    def progress_percentage(self):
+        total_tasks = self.tasks.count()
+        completed_tasks = self.tasks.filter(is_completed=True).count()
+        return (completed_tasks / total_tasks) * 100 if total_tasks > 0 else 0
+
 
 class Task(models.Model):
     title = models.CharField(max_length=100)
@@ -71,10 +76,12 @@ class Task(models.Model):
 
     def __str__(self):
         return self.title
+
     def save(self, *args, **kwargs):
         """Override save to auto-update project status"""
         super().save(*args, **kwargs)
         self.project.check_completion()
+
 
 @require_POST
 def toggle_task(request, pk):

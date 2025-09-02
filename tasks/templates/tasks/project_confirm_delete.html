@@ -1,9 +1,28 @@
 {% extends 'base.html' %}
 {% block content %}
-  <h2>Are you sure you want to delete "{{ object.name }}"?</h2>
-  <form method="post">
+<div class="max-w-md mx-auto mt-20 p-6 bg-white rounded-lg shadow-md text-center">
+  
+  <!-- Confirmation message -->
+  <div class="text-gray-800 font-heading text-xl mb-6">
+    Are you sure you want to delete 
+    <span class="font-body text-gray-600">"{{ object.name }}"</span>?
+  </div>
+  
+  <!-- Form -->
+  <form method="post" class="flex justify-center gap-4">
     {% csrf_token %}
-    <button type="submit">Yes, delete</button>
-    <a href="{% url 'project-detail' object.pk %}">Cancel</a>
+    
+    <!-- Delete button -->
+    <button type="submit" 
+      class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded transition-colors duration-200">
+      Yes, delete
+    </button>
+    
+    <!-- Cancel link -->
+    <a href="{% url 'project-detail' object.pk %}" 
+      class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded transition-colors duration-200">
+      Cancel
+    </a>
   </form>
+</div>
 {% endblock %}

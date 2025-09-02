@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     {% tailwind_css %}
+	<link href="https://fonts.googleapis.com/css2?family=Inter&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+
   </head>
 
   <body class="bg-gray-50 text-black font-serif leading-normal tracking-normal">
@@ -15,7 +17,7 @@
       <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
         <!-- Logo + Mobile Toggler -->
         <div class="flex justify-between items-center w-full h-[10vh]">
-          <h1 class="text-2xl font-bold text-blue-600">ProPlana</h1>
+          <h1 class="text-2xl font-heading text-blue-600 font-bold"><a href="{% url 'landing-page' %}">Pro<span class="border-b-2 border-b-blue-600">Plana</span></a></h1>
 
           <!-- Mobile Toggler -->
           <button id="menu-btn" class="md:hidden text-blue-600 focus:outline-none flex items-center justify-center">
@@ -31,25 +33,37 @@
         </div>
 
         <!-- Navigation -->
-        <nav id="menu" class="opacity-0 h-0 transition-all duration-300 ease-in-out md:opacity-100 md:h-[10vh] md:flex flex-col md:flex-row w-[100vw] md:w-[20vw] justify-between items-center bg-white md:bg-transparent shadow-md md:shadow-none">
+        <nav id="menu" class="border-t border-t-blue-600 md:border-0 opacity-0 h-0 transition-all duration-300 ease-in-out md:opacity-100 md:h-[10vh] md:flex flex-col md:flex-row w-[100vw] md:w-[40vw] justify-between items-center bg-white md:bg-transparent shadow-md md:shadow-none">
           {% if not user.is_authenticated %}
-            <div class="flex flex-col md:flex-row md:space-x-4 p-4 md:p-0">
-              <a href="{% url 'login' %}" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Login</a>
-              <a href="{% url 'signup' %}" class="px-4 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-600 hover:text-white">Sign Up</a>
+            <div class="flex flex-col md:flex-row md:justify-end text-center justify-center p-4 md:p-0 w-full">
+              <div class="flex justify-center items-center md:mr-8">
+                <a href="{% url 'landing-page' %}" class="px-2 py-0 font-[600] text-blue-600 transition-all duration-300 ease-in-out border-b-2 border-b-transparent hover:border-b-blue-600">Home</a>
+              </div>
+              <div class="flex justify-around mt-8 md:mt-0">
+                {% if request.resolver_match.url_name != 'login' %}
+                  <a href="{% url 'login' %}" class="px-12 md:px-8 py-2 md:mr-8 text-center bg-blue-600 text-white rounded-lg hover:bg-blue-700">Login</a>
+                {% endif %}
+                {% if request.resolver_match.url_name != 'signup' %}
+                  <a href="{% url 'signup' %}" class="px-12 md:px-6 py-2 text-center border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-600 hover:text-white">Sign Up</a>
+                {% endif %}
+              </div>
             </div>
           {% endif %}
           {% if user.is_authenticated %}
-            <ul class="md:flex md:justify-between w-full">
+            <ul class="md:flex md:justify-between w-full p-0 m-0">
               <li class="justify-center flex items-center">
-                <a href="{% url 'home' %}">Home</a>
+                <a href="{% url 'home' %}" class="font-[600] text-blue-600 transition-all duration-300 ease-in-out border-b-2 border-b-transparent hover:border-b-blue-600">Home</a>
               </li>
               <li class="justify-center flex items-center">
-                <a href="{% url 'projects' %}">Projects</a>
+                <a href="{% url 'projects' %}" class="font-[600] text-blue-600 transition-all duration-300 ease-in-out border-b-2 border-b-transparent hover:border-b-blue-600">Projects</a>
+              </li>
+              <li class="justify-center flex items-center">
+                <a href="{% url 'profile' %}" class="font-[600] text-blue-600 transition-all duration-300 ease-in-out border-b-2 border-b-transparent hover:border-b-blue-600">Profile</a>
               </li>
               <li>
                 <form action="{% url 'logout' %}" method="POST" class="mt-2 md:mt-0 text-center">
                   {% csrf_token %}
-                  <input type="submit" value="Logout" class="w-[60%] md:w-auto px-4 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-600 hover:text-white" />
+                  <input type="submit" value="Logout" class="w-[60%] md:w-auto px-4 py-2 border border-blue-600 text-blue-600 rounded-lg transition-all duration-300 ease-in-out hover:bg-blue-600 hover:text-white" />
                 </form>
               </li>
             </ul>
@@ -60,6 +74,7 @@
 
     <div>
       {% block content %}
+
       {% endblock %}
     </div>
 
@@ -73,7 +88,7 @@
         menu.classList.toggle('opacity-0')
         menu.classList.toggle('h-0')
         menu.classList.toggle('h-[30vh]')
-        
+      
         X.classList.toggle('opacity-0')
         Y.classList.toggle('opacity-0')
       })

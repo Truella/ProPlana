@@ -23,7 +23,7 @@ class ProjectForm(forms.ModelForm):
                 attrs={
                     **INPUT_STYLE_ATTR,
                     "rows": 4,
-                    "style":"resize:none",
+                    "style": "resize:none",
                     "placeholder": "Enter description",
                 }
             ),
@@ -55,6 +55,7 @@ class TaskForm(forms.ModelForm):
                 attrs={
                     **INPUT_STYLE_ATTR,
                     "rows": 4,
+                    "style": "resize:none",
                     "placeholder": "Enter description",
                 }
             ),
