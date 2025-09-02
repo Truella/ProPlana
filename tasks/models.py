@@ -36,8 +36,7 @@ class Project(models.Model):
     due_date = models.DateField(null=True, blank=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     is_active = models.BooleanField(default=True, null=True)
-    is_completed = models.BooleanField(default=False)
-
+    
     def __str__(self):
         return self.name
 
@@ -46,15 +45,10 @@ class Project(models.Model):
         """Return True if project has a due date and it's already past."""
         return self.due_date and self.due_date < timezone.now().date()
 
-    def check_completion(self):
-        """Update project completion status based on its tasks"""
-        if self.tasks.exists() and all(task.is_completed for task in self.tasks.all()):
-            self.is_completed = True
-            self.is_active = False
-        else:
-            self.is_completed = False
-            self.is_active = True
-        self.save()
+    @property
+    def is_completed(self):
+        """Check if project is completed based on tasks"""
+        return self.tasks.exists() and all(task.is_completed for task in self.tasks.all())
 
     def progress_percentage(self):
         total_tasks = self.tasks.count()

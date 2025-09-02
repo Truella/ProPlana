@@ -24,21 +24,30 @@ class ProjectView(LoginRequiredMixin, ListView):
     model = Project
     template_name = "tasks/projects.html"
 
-    COLORS = [
-        ("bg-yellow-100", "bg-yellow-600"),
-        ("bg-green-100", "bg-green-600"),
-        ("bg-blue-100", "bg-blue-600"),
-        ("bg-pink-100", "bg-pink-600"),
-        ("bg-purple-100", "bg-purple-600"),
-        ("bg-orange-100", "bg-orange-600"),
-    ]
-
     def get_queryset(self):
         projects = Project.objects.filter(owner=self.request.user)
-        for i, project in enumerate(projects):
-            bg_card, btn_color = self.COLORS[i % len(self.COLORS)]
-            project.bg_color = bg_card  # pastel card color
-            project.btn_color = btn_color  # solid button color
+        for project in projects:
+            print(f"Project: {project.name}")
+            print(f"is_completed: {project.is_completed}")
+            print(f"is_overdue: {project.is_overdue}")  
+            print(f"Condition 1 (completed): {project.is_completed}")
+            print(f"Condition 2 (overdue & not completed): {project.is_overdue and not project.is_completed}")
+
+            if project.is_completed:
+                project.bg_color = "bg-green-50"
+                project.border_color = "border-green-200"
+                print(f"Applied GREEN background")
+            elif project.is_overdue and not project.is_completed: 
+                project.bg_color = "bg-red-50"
+                project.border_color = "border-red-200"
+                print(f"Applied RED background")
+            else:  # Active projects
+                project.bg_color = "bg-blue-50"
+                project.border_color = "border-blue-200"
+                print(f"Applied BLUE background")
+
+            print(f"Final bg_color: {project.bg_color}")
+            print("---")
         return projects
 
 
