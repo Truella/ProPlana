@@ -1,24 +1,52 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <div class="flex justify-between items-center max-w-6xl mx-4 md:mx-auto mt-8 mb-4">
-    <a class="border rounded-md py-2 px-4 text-blue-600 border-blue-600" href="{% url 'project-detail' project.pk %}">Go back to tasks</a>
-  </div>
-  <div class="flex items-center justify-center bg-gray-50 w-[90vw] mx-auto">
-    <div class="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg">
-      <h2 class="text-2xl font-[500] text-blue-600 mb-6 text-center">Add a new task</h2>
-      <form method="POST" class="space-y-5">
+  <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Back Button -->
+    <div class="mb-6">
+      <a href="{% url 'project-detail' project.pk %}" class="inline-flex items-center text-slate-600 hover:text-slate-900 transition-colors">
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+        Back to {{ project.name }}
+      </a>
+    </div>
+
+    <!-- Form Card -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-8">
+      <div class="text-center mb-8">
+        <div class="w-16 h-16 bg-gradient-to-br from-teal-500 to-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+          </svg>
+        </div>
+        <h2 class="text-2xl font-semibold text-slate-900 mb-2">Add New Task</h2>
+        <p class="text-slate-600">Create a task for <span class="font-medium">{{ project.name }}</span></p>
+      </div>
+
+      <form method="POST" class="space-y-6">
         {% csrf_token %}
         {% for field in form %}
           <div>
-            <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">{{ field.label }}</label>
+            <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-slate-700 mb-2">
+              {{ field.label }}
+            </label>
             {{ field }}
             {% if field.errors %}
-              <p class="text-red-500 text-xs mt-1">{{ field.errors }}</p>
+              <div class="mt-2 text-sm text-red-600">
+                {% for error in field.errors %}
+                  <p>{{ error }}</p>
+                {% endfor %}
+              </div>
             {% endif %}
           </div>
         {% endfor %}
-        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow transition duration-200">Save</button>
+        
+        <div class="pt-4">
+          <button type="submit" class="w-full bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 px-6 rounded-xl transition-colors shadow-sm hover:shadow-md">
+            Create Task
+          </button>
+        </div>
       </form>
     </div>
   </div>

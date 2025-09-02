@@ -7,91 +7,101 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     {% tailwind_css %}
-	<link href="https://fonts.googleapis.com/css2?family=Inter&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
   </head>
 
-  <body class="bg-gray-50 text-black font-serif leading-normal tracking-normal">
+  <body class="bg-slate-50 text-slate-800 font-sans antialiased">
     <!-- Navbar -->
-    <header class="bg-white shadow-md w-full z-10">
-      <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
-        <!-- Logo + Mobile Toggler -->
-        <div class="flex justify-between items-center w-full h-[10vh]">
-          <h1 class="text-2xl font-heading text-blue-600 font-bold"><a href="{% url 'landing-page' %}">Pro<span class="border-b-2 border-b-blue-600">Plana</span></a></h1>
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <!-- Logo -->
+          <div class="flex items-center">
+            <h1 class="text-xl font-semibold text-slate-900">
+              <a href="{% url 'landing-page' %}" class="flex items-center space-x-2">
+                <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-teal-500 rounded-lg flex items-center justify-center">
+                  <span class="text-white font-bold text-sm">P</span>
+                </div>
+                <span>ProPlana</span>
+              </a>
+            </h1>
+          </div>
 
-          <!-- Mobile Toggler -->
-          <button id="menu-btn" class="md:hidden text-blue-600 focus:outline-none flex items-center justify-center">
-            <!-- Hamburger Icon -->
-            <svg class="w-8 h-8" id="open-menu" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+          <!-- Desktop Navigation -->
+          {% if user.is_authenticated %}
+            <nav class="hidden md:flex items-center space-x-8">
+              <a href="{% url 'home' %}" class="text-slate-600 hover:text-slate-900 font-medium transition-colors">Dashboard</a>
+              <a href="{% url 'projects' %}" class="text-slate-600 hover:text-slate-900 font-medium transition-colors">Projects</a>
+              <a href="{% url 'profile' %}" class="text-slate-600 hover:text-slate-900 font-medium transition-colors">Profile</a>
+              <form action="{% url 'logout' %}" method="POST" class="inline">
+                {% csrf_token %}
+                <button type="submit" class="text-slate-600 hover:text-slate-900 font-medium transition-colors">Logout</button>
+              </form>
+            </nav>
+          {% else %}
+            <div class="hidden md:flex items-center space-x-4">
+              {% if request.resolver_match.url_name != 'login' %}
+                <a href="{% url 'login' %}" class="text-slate-600 hover:text-slate-900 font-medium transition-colors">Login</a>
+              {% endif %}
+              {% if request.resolver_match.url_name != 'signup' %}
+                <a href="{% url 'signup' %}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">Sign Up</a>
+              {% endif %}
+            </div>
+          {% endif %}
+
+          <!-- Mobile menu button -->
+          <button id="menu-btn" class="md:hidden p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100">
+            <svg class="w-6 h-6" id="open-menu" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
-            <!-- Close Icon -->
-            <svg class="w-8 h-8 opacity-0 absolute" id="close-menu" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            <svg class="w-6 h-6 hidden" id="close-menu" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
 
-        <!-- Navigation -->
-        <nav id="menu" class="border-t border-t-blue-600 md:border-0 opacity-0 h-0 transition-all duration-300 ease-in-out md:opacity-100 md:h-[10vh] md:flex flex-col md:flex-row w-[100vw] md:w-[40vw] justify-between items-center bg-white md:bg-transparent shadow-md md:shadow-none">
-          {% if not user.is_authenticated %}
-            <div class="flex flex-col md:flex-row md:justify-end text-center justify-center p-4 md:p-0 w-full">
-              <div class="flex justify-center items-center md:mr-8">
-                <a href="{% url 'landing-page' %}" class="px-2 py-0 font-[600] text-blue-600 transition-all duration-300 ease-in-out border-b-2 border-b-transparent hover:border-b-blue-600">Home</a>
-              </div>
-              <div class="flex justify-around mt-8 md:mt-0">
-                {% if request.resolver_match.url_name != 'login' %}
-                  <a href="{% url 'login' %}" class="px-12 md:px-8 py-2 md:mr-8 text-center bg-blue-600 text-white rounded-lg hover:bg-blue-700">Login</a>
-                {% endif %}
-                {% if request.resolver_match.url_name != 'signup' %}
-                  <a href="{% url 'signup' %}" class="px-12 md:px-6 py-2 text-center border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-600 hover:text-white">Sign Up</a>
-                {% endif %}
-              </div>
+        <!-- Mobile Navigation -->
+        <div id="mobile-menu" class="md:hidden hidden border-t border-slate-200 py-4">
+          {% if user.is_authenticated %}
+            <div class="space-y-2">
+              <a href="{% url 'home' %}" class="block px-4 py-2 text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Dashboard</a>
+              <a href="{% url 'projects' %}" class="block px-4 py-2 text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Projects</a>
+              <a href="{% url 'profile' %}" class="block px-4 py-2 text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">Profile</a>
+              <form action="{% url 'logout' %}" method="POST" class="px-4">
+                {% csrf_token %}
+                <button type="submit" class="w-full text-left py-2 text-slate-600 hover:text-slate-900 transition-colors">Logout</button>
+              </form>
+            </div>
+          {% else %}
+            <div class="space-y-2 px-4">
+              {% if request.resolver_match.url_name != 'login' %}
+                <a href="{% url 'login' %}" class="block py-2 text-slate-600 hover:text-slate-900 transition-colors">Login</a>
+              {% endif %}
+              {% if request.resolver_match.url_name != 'signup' %}
+                <a href="{% url 'signup' %}" class="block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors text-center">Sign Up</a>
+              {% endif %}
             </div>
           {% endif %}
-          {% if user.is_authenticated %}
-            <ul class="md:flex md:justify-between w-full p-0 m-0">
-              <li class="justify-center flex items-center">
-                <a href="{% url 'home' %}" class="font-[600] text-blue-600 transition-all duration-300 ease-in-out border-b-2 border-b-transparent hover:border-b-blue-600">Home</a>
-              </li>
-              <li class="justify-center flex items-center">
-                <a href="{% url 'projects' %}" class="font-[600] text-blue-600 transition-all duration-300 ease-in-out border-b-2 border-b-transparent hover:border-b-blue-600">Projects</a>
-              </li>
-              <li class="justify-center flex items-center">
-                <a href="{% url 'profile' %}" class="font-[600] text-blue-600 transition-all duration-300 ease-in-out border-b-2 border-b-transparent hover:border-b-blue-600">Profile</a>
-              </li>
-              <li>
-                <form action="{% url 'logout' %}" method="POST" class="mt-2 md:mt-0 text-center">
-                  {% csrf_token %}
-                  <input type="submit" value="Logout" class="w-[60%] md:w-auto px-4 py-2 border border-blue-600 text-blue-600 rounded-lg transition-all duration-300 ease-in-out hover:bg-blue-600 hover:text-white" />
-                </form>
-              </li>
-            </ul>
-          {% endif %}
-        </nav>
+        </div>
       </div>
     </header>
 
-    <div>
+    <main class="min-h-screen">
       {% block content %}
-
       {% endblock %}
-    </div>
+    </main>
 
     <script>
-      const btn = document.getElementById('menu-btn')
-      const menu = document.getElementById('menu')
-      const X = document.getElementById('close-menu')
-      const Y = document.getElementById('open-menu')
+      const menuBtn = document.getElementById('menu-btn');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const openIcon = document.getElementById('open-menu');
+      const closeIcon = document.getElementById('close-menu');
       
-      btn.addEventListener('click', () => {
-        menu.classList.toggle('opacity-0')
-        menu.classList.toggle('h-0')
-        menu.classList.toggle('h-[30vh]')
-      
-        X.classList.toggle('opacity-0')
-        Y.classList.toggle('opacity-0')
-      })
+      menuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+        openIcon.classList.toggle('hidden');
+        closeIcon.classList.toggle('hidden');
+      });
     </script>
   </body>
 </html>
