@@ -3,6 +3,16 @@
 
 {% block content %}
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Back Button -->
+    <div class="mb-6">
+      <a href="{% url 'landing-page' %}" class="inline-flex items-center text-slate-600 hover:text-slate-900 transition-colors">
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+        Back to Home
+      </a>
+    </div>
+
     <!-- Welcome Section -->
     <div class="bg-white rounded-2xl border border-slate-200 p-8 mb-8 shadow-sm">
       <div class="flex items-center space-x-4 mb-4">

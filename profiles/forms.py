@@ -28,7 +28,12 @@ class UserUpdateForm(forms.ModelForm):
                     "placeholder": "Enter new last name",
                 }
             ),
-            # "email":forms.EmailField()
+            "email": forms.EmailInput(
+                attrs={
+                    **INPUT_STYLE_ATTR,
+                    "placeholder": "Enter email address",
+                }
+            ),
         }
 
 
@@ -40,13 +45,13 @@ class ProfileUpdateForm(forms.ModelForm):
             "role": forms.TextInput(
                 attrs={
                     **INPUT_STYLE_ATTR,
-                    "placeholder": "Enter new username",
+                    "placeholder": "Enter your role",
                 }
             ),
             "contact": forms.TextInput(
                 attrs={
                     **INPUT_STYLE_ATTR,
-                    "placeholder": "Enter your role",
+                    "placeholder": "Enter contact information",
                 }
             ),
         }
