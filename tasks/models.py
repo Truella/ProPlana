@@ -35,7 +35,7 @@ class Project(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     due_date = models.DateField(null=True, blank=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    is_active = models.BooleanField(default=True, null=True)
+    is_active = models.BooleanField(default=True)
     
     def __str__(self):
         return self.name
