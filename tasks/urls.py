@@ -22,9 +22,9 @@ urlpatterns = [
     path(
         "projects/<int:pk>/delete/", DeleteProjectView.as_view(), name="project-delete"
     ),
-    path("projects/<int:pk>/task/new", TaskCreateView.as_view(), name="create-task"),
+    path("projects/<int:pk>/task/new/", TaskCreateView.as_view(), name="create-task"),
     path(
-        "projects/<int:project_pk>/task/<int:task_pk>/edit",
+        "projects/<int:project_pk>/task/<int:task_pk>/edit/",
         TaskUpdateView.as_view(),
         name="edit-task",
     ),

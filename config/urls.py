@@ -24,9 +24,9 @@ from .views import HomePageView
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", HomePageView.as_view(), name="landing-page"),
-    path("projects/", include("tasks.urls")),
+    path("", include("tasks.urls")),
     path("accounts/", include("accounts.urls")),
-    path('profile', include('profiles.urls'))
+    path("", include('profiles.urls'))
 ]
 if settings.DEBUG:
     urlpatterns += [
