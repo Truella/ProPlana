@@ -23,8 +23,8 @@ from .views import HomePageView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("proplana/", HomePageView.as_view(), name="landing-page"),
-    path("", include("tasks.urls")),
+    path("", HomePageView.as_view(), name="landing-page"),
+    path("projects/", include("tasks.urls")),
     path("accounts/", include("accounts.urls")),
     path('profile', include('profiles.urls'))
 ]
