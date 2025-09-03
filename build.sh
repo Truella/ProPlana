@@ -18,8 +18,10 @@ npm install
 # Change back to the project root
 cd ../../
 
-# Explicitly set NPM_BIN_PATH for the following commands
+# Set NPM_BIN_PATH environment variable for Django
 export NPM_BIN_PATH=$(which npm)
+echo "NPM_BIN_PATH set to: $NPM_BIN_PATH"
+
 python manage.py tailwind build
 
 # Collect static files and run migrations
