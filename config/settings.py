@@ -146,7 +146,10 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 TAILWIND_APP_NAME = "theme"
-NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
+
+# NPM_BIN_PATH configuration for different environments
+import shutil
+NPM_BIN_PATH = shutil.which("npm") or "/usr/bin/npm"
 
 LOGIN_URL = "/accounts/login/"
 LOGIN_REDIRECT_URL = "home"
