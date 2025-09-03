@@ -17,9 +17,7 @@ db.sqlite3
 
 # Tailwind / Node
 node_modules/
-theme/static_src/
 theme/node_modules/
-theme/package-lock.json
 
 # OS
 .DS_Store
