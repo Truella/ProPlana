@@ -27,12 +27,6 @@ class ProjectView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         projects = Project.objects.filter(owner=self.request.user)
         for project in projects:
-            print(f"Project: {project.name}")
-            print(f"is_completed: {project.is_completed}")
-            print(f"is_overdue: {project.is_overdue}")  
-            print(f"Condition 1 (completed): {project.is_completed}")
-            print(f"Condition 2 (overdue & not completed): {project.is_overdue and not project.is_completed}")
-
             if project.is_completed:
                 project.bg_color = "bg-green-50"
                 project.border_color = "border-green-200"
@@ -137,3 +131,9 @@ class TaskUpdateView(LoginRequiredMixin, UpdateView):
         context = super().get_context_data(**kwargs)
         context["project"] = get_object_or_404(Project, pk=self.kwargs["project_pk"])
         return context
+class TaskDeleteView(LoginRequiredMixin, DeleteView):
+    model = Task
+    pk_url_kwarg = "task_pk"
+
+    def get_success_url(self):
+        return reverse_lazy("project-detail", kwargs={"pk": self.object.project.pk})

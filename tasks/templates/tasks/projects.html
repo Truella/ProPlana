@@ -10,8 +10,7 @@
       <a href="{% url 'create-project' %}" class="inline-flex items-center px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition-colors shadow-sm">
         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-        </svg>
-        New Project
+        </svg>New Project
       </a>
     </div>
 
@@ -19,29 +18,22 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {% for project in object_list %}
         <div class="bg-white rounded-2xl border border-slate-200 hover:border-slate-300 transition-all duration-200 hover:shadow-lg group
-          {% if project.is_overdue %}
+          {% if project.is_overdue and not project.is_completed %}
             ring-2 ring-red-200 border-red-300
           {% endif %}">
-          
           <!-- Project Header -->
           <div class="p-6 border-b border-slate-100">
             <div class="flex items-start justify-between mb-3">
-              <h3 class="text-lg font-semibold text-slate-900 group-hover:text-blue-600 transition-colors">
-                {{ project.name }}
-              </h3>
+              <h3 class="text-lg font-semibold text-slate-900 group-hover:text-blue-600 transition-colors">{{ project.name }}</h3>
               <div class="flex items-center space-x-1">
-                {% if project.is_active %}
-                  <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
-                    Active
-                  </span>
+                {% if not project.is_completed %}
+                  <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">Active</span>
                 {% else %}
-                  <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600">
-                    Completed
-                  </span>
+                  <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600">Completed</span>
                 {% endif %}
               </div>
             </div>
-            
+
             <!-- Description -->
             {% if project.description %}
               <p class="text-slate-600 text-sm leading-relaxed line-clamp-3">{{ project.description|truncatewords:20 }}</p>
@@ -55,12 +47,31 @@
             <!-- Due Date -->
             {% if project.due_date %}
               <div class="flex items-center space-x-2">
-                <svg class="w-4 h-4 {% if project.is_overdue %}text-red-500{% else %}text-slate-400{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-4 h-4 {% if project.is_overdue %}
+                    
+                    text-red-500
+
+                  {% else %}
+                    
+                    text-slate-400
+
+                  {% endif %}"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                 </svg>
-                <span class="text-sm {% if project.is_overdue %}text-red-600 font-medium{% else %}text-slate-600{% endif %}">
+                <span class="text-sm {% if project.is_overdue %}
+                    
+                    text-red-600 font-medium
+
+                  {% else %}
+                    
+                    text-slate-600
+
+                  {% endif %}">
                   Due: {{ project.due_date }}
-                  {% if project.is_overdue %}
+                  {% if project.is_overdue and not project.is_completed%}
                     <span class="text-red-500 font-medium">(Overdue)</span>
                   {% endif %}
                 </span>
@@ -89,15 +100,9 @@
           <!-- Action Buttons -->
           <div class="p-6 pt-0">
             <div class="flex space-x-2">
-              <a href="{% url 'project-detail' project.pk %}" class="flex-1 px-3 py-2 text-center bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-medium transition-colors text-sm">
-                View
-              </a>
-              <a href="{% url 'project-update' project.pk %}" class="flex-1 px-3 py-2 text-center bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-lg font-medium transition-colors text-sm">
-                Edit
-              </a>
-              <a href="{% url 'project-delete' project.pk %}" class="flex-1 px-3 py-2 text-center bg-red-100 hover:bg-red-200 text-red-700 rounded-lg font-medium transition-colors text-sm">
-                Delete
-              </a>
+              <a href="{% url 'project-detail' project.pk %}" class="flex-1 px-3 py-2 text-center bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-medium transition-colors text-sm">View</a>
+              <a href="{% url 'project-update' project.pk %}" class="flex-1 px-3 py-2 text-center bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-lg font-medium transition-colors text-sm">Edit</a>
+              <a href="{% url 'project-delete' project.pk %}" class="flex-1 px-3 py-2 text-center bg-red-100 hover:bg-red-200 text-red-700 rounded-lg font-medium transition-colors text-sm">Delete</a>
             </div>
           </div>
         </div>
@@ -112,79 +117,76 @@
             <a href="{% url 'create-project' %}" class="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition-colors">
               <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-              </svg>
-              Create Project
+              </svg>Create Project
             </a>
           </div>
         </div>
       {% endfor %}
     </div>
-  {% endif %}
-</div>
+  </div>
 
-<!-- JavaScript for search and filter functionality -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Search functionality
-    const searchInput = document.getElementById('searchInput');
-    const projectCards = document.querySelectorAll('.project-card');
-
-    if (searchInput) {
-        searchInput.addEventListener('input', function() {
-            const searchTerm = this.value.toLowerCase();
-            
-            projectCards.forEach(card => {
-                const title = card.querySelector('h3').textContent.toLowerCase();
-                const description = card.querySelector('p').textContent.toLowerCase();
-                
-                if (title.includes(searchTerm) || description.includes(searchTerm)) {
-                    card.style.display = 'flex';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        });
-    }
-
-    // Filter functionality
-    const filterButtons = document.querySelectorAll('.filter-btn');
-    const activeProjectsSection = document.getElementById('activeProjects');
-    const completedProjectsSection = document.getElementById('completedProjects');
-
-    filterButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            // Remove active class from all buttons
-            filterButtons.forEach(btn => btn.classList.remove('active'));
-            // Add active class to clicked button
-            this.classList.add('active');
-
-            const filter = this.dataset.filter;
-            
-            if (filter === 'all') {
-                if (activeProjectsSection) {
-                    activeProjectsSection.closest('.max-w-6xl').style.display = 'block';
-                }
-                if (completedProjectsSection) {
-                    completedProjectsSection.closest('.max-w-6xl').style.display = 'block';
-                }
-            } else if (filter === 'active') {
-                if (activeProjectsSection) {
-                    activeProjectsSection.closest('.max-w-6xl').style.display = 'block';
-                }
-                if (completedProjectsSection) {
-                    completedProjectsSection.closest('.max-w-6xl').style.display = 'none';
-                }
-            } else if (filter === 'completed') {
-                if (activeProjectsSection) {
-                    activeProjectsSection.closest('.max-w-6xl').style.display = 'none';
-                }
-                if (completedProjectsSection) {
-                    completedProjectsSection.closest('.max-w-6xl').style.display = 'block';
-                }
+  <!-- JavaScript for search and filter functionality -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Search functionality
+      const searchInput = document.getElementById('searchInput')
+      const projectCards = document.querySelectorAll('.project-card')
+    
+      if (searchInput) {
+        searchInput.addEventListener('input', function () {
+          const searchTerm = this.value.toLowerCase()
+    
+          projectCards.forEach((card) => {
+            const title = card.querySelector('h3').textContent.toLowerCase()
+            const description = card.querySelector('p').textContent.toLowerCase()
+    
+            if (title.includes(searchTerm) || description.includes(searchTerm)) {
+              card.style.display = 'flex'
+            } else {
+              card.style.display = 'none'
             }
-        });
-    });
-});
-</script>
-
+          })
+        })
+      }
+    
+      // Filter functionality
+      const filterButtons = document.querySelectorAll('.filter-btn')
+      const activeProjectsSection = document.getElementById('activeProjects')
+      const completedProjectsSection = document.getElementById('completedProjects')
+    
+      filterButtons.forEach((button) => {
+        button.addEventListener('click', function () {
+          // Remove active class from all buttons
+          filterButtons.forEach((btn) => btn.classList.remove('active'))
+          // Add active class to clicked button
+          this.classList.add('active')
+    
+          const filter = this.dataset.filter
+    
+          if (filter === 'all') {
+            if (activeProjectsSection) {
+              activeProjectsSection.closest('.max-w-6xl').style.display = 'block'
+            }
+            if (completedProjectsSection) {
+              completedProjectsSection.closest('.max-w-6xl').style.display = 'block'
+            }
+          } else if (filter === 'active') {
+            if (activeProjectsSection) {
+              activeProjectsSection.closest('.max-w-6xl').style.display = 'block'
+            }
+            if (completedProjectsSection) {
+              completedProjectsSection.closest('.max-w-6xl').style.display = 'none'
+            }
+          } else if (filter === 'completed') {
+            if (activeProjectsSection) {
+              activeProjectsSection.closest('.max-w-6xl').style.display = 'none'
+            }
+            if (completedProjectsSection) {
+              completedProjectsSection.closest('.max-w-6xl').style.display = 'block'
+            }
+          }
+        })
+      })
+    })
+  </script>
 {% endblock %}

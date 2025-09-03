@@ -10,6 +10,7 @@ from .views import (
     DeleteProjectView,
     TaskCreateView,
     TaskUpdateView,
+    TaskDeleteView,
 )
 
 urlpatterns = [
@@ -28,4 +29,9 @@ urlpatterns = [
         name="edit-task",
     ),
     path("tasks/<int:pk>/toggle/", toggle_task, name="toggle-task"),
+    path(
+        "projects/<int:project_pk>/task/<int:task_pk>/delete/",
+        TaskDeleteView.as_view(),
+        name="delete-task",
+    ),
 ]

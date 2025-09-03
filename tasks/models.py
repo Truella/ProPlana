@@ -74,8 +74,7 @@ class Task(models.Model):
     def save(self, *args, **kwargs):
         """Override save to auto-update project status"""
         super().save(*args, **kwargs)
-        self.project.check_completion()
-
+        
 
 @require_POST
 def toggle_task(request, pk):
