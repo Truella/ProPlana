@@ -6,9 +6,21 @@ services:
     env: python
     plan: free  
     buildCommand: |
+      curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+      apt-get install -y nodejs
+
+  # Verify Node and npm
+      node -v
+      npm -v
+
+  # Install Python dependencies
       pip install -r requirements.txt
+
+  # Tailwind setup & build
       python manage.py tailwind install
       python manage.py tailwind build
+
+  # Collect static files and run migrations
       python manage.py collectstatic --noinput
       python manage.py migrate
     startCommand: gunicorn proplana.wsgi:application
